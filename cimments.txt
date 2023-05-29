@@ -1,0 +1,84 @@
+
+    // Retrieve all cards associated with the logged-in user
+    $cards = UserCard::where('user_id', $user_id)->get();
+
+    // Initialize an array to store the product and image data
+    $data = [];
+
+    // Retrieve the products and image paths for each card
+    foreach ($cards as $card) {
+        $product = $card->product;
+        $imagePaths = $product->images()->select('imgPath')->get()->pluck('imgPath')->toArray();
+
+        // Convert the product object to an array and add the image paths
+        $productArray = $product->toArray();
+        $productArray['imgPaths'] = $imagePaths;
+
+        // Add the product array to the data array
+        $data[] = $productArray;
+    }
+
+    // Return the data as a JSON response
+    return response()->json($data);
+
+   //    $userId=Auth::user()->id;
+
+        //    $cards = Product::with(['images'=>function($q){
+        //     $q->select('imgPath','product_id');
+        //    }])->select('products.name','products.price','products.discount','products.description','products.id')
+        //     ->join('user_cards', 'user_cards.product_id', '=', 'products.id')
+        //     ->join('users', 'users.id', '=', 'user_cards.user_id')
+           
+        //     ->where('users.id', $userId)
+        //     ->get()->toArray();
+        // // $category=Category::where("name",$catName)->get();
+        // return response()->json($cards);
+
+
+
+        
+    public function upload(Request $request){
+        // $name="mohamed";
+        $image_path = $request->file('file')->store("images/users", 'public');
+
+        // $image_path = $request->image->move(public_path('images'), $image_name);
+
+        // $extension = $request->file->getClientOriginalExtension();
+
+        // $image_name = str_replace(' ', '', trim($request->model) . time() . "." . $extension);
+        // $image_name = str_replace(' ', '', trim($request->file) . "." . $extension);
+
+        // $image_name = $request->file->getClientOriginalName();
+
+
+
+    //     $data = Image::create([
+    //         'name' => $image_name,
+    //         'product_id'=>1
+    //    ]);
+        return $image_path;
+
+
+        // $file = $request->file('image');
+        // $filename = time() . '.' . $file->getClientOriginalExtension();
+        // $file->move(public_path('uploads'), $filename);
+        // return response()->json(['success' => true]);
+
+
+        // $fileName = $request->file('file')->getClientOriginalName();
+        // $extension = $request->file('file')->extension();
+        // $mime = $request->file('file')->getMimeType();
+        // $clientSize = $request->file('file')->getSize();
+
+
+
+
+           // $url="http://127.0.0.1:8000/storage/";
+            // $path=$request->file('image')->storeAs('userImages',$ProductName);
+        //   Storage::disk('public')->put($image_path.'/' .$imageName, base64_decode($image));
+         // $uploadedFileUrl = cloudinary()->upload($request->file('image')->getRealPath(),['folder'=>'users'])->getSecurePath();
+        // $fullPathName='uploads/users/'.$filename;
+
+        // $filename = time() . '.' . $file->getClientOriginalExtension();
+       
+    }
